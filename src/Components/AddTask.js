@@ -16,6 +16,7 @@ class AddTask extends React.Component {
     this.props.addTaskHandler(this.state);
     this.setState({ name: "", date: "", status: "" });
 
+
   };
   render() {
     return (
@@ -26,27 +27,28 @@ class AddTask extends React.Component {
 
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">Task name</label>
-            <input type="text" name="name" placeholder="Name" value={this.state.name} onChange={(e) => this.setState({ name: e.target.value })} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Task" />
+            <input type="text" name="name" value={this.state.name} onChange={(e) => this.setState({ name: e.target.value })} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Task" />
           </div>
 
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">Task Date</label>
-            <input type="date" name="date" value={this.state.date} onChange={(e) => this.setState({ date: e.target.value })} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
-      
+            <input type="date" name="date" value={this.state.date} onChange={(e) => this.setState({ date: e.target.value })} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+
           </div>
 
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">Status :</label>
-            <select onChange={(e) => this.setState({ status: e.target.value })} name="status" value={this.state.status} class="w-full h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:shadow-outline">
+            <select onChange={(e) => this.setState({ status: e.target.value })} name="status" value={this.state.status} className="w-full h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:shadow-outline">
+              <option defaultValue="">Choose a status</option>
               <option value="Pending">Pending</option>
               <option value="Done">Done</option>
             </select>
           </div>
           {/* <button className="ui button blue">Add</button> */}
           <div className="flex flex-row-reverse">
-              <button type="submit" className="focus:outline-none  text-white text-sm py-2.5 px-5 rounded-md bg-green-500 hover:bg-green-600 hover:shadow-lg flex-row-reverse">Add</button>
-            </div>
-          
+            <button type="submit" className="focus:outline-none  text-white text-sm py-2.5 px-5 rounded-md bg-green-500 hover:bg-green-600 hover:shadow-lg flex-row-reverse">Add</button>
+          </div>
+
         </form>
       </div>
     );

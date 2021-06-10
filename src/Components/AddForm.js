@@ -40,26 +40,8 @@ export default function addForm({ open, children, onClose, addTaskHandler }) {
         <div>
           <AddTask addTaskHandler={addTaskHandler}></AddTask>
         </div>
-
         <div className="mt-4">
-
         </div>
-
-        {/* <div className="mb-3 grid grid-cols-3 gap-4">
-          <div>
-            <div className="relative text-gray-600 focus-within:text-gray-400">
-              <button onClick={onClose} className="py-2">Close</button>
-              {children}
-            </div>
-          </div>
-          <div></div>
-          <div>
-            <div className="flex flex-row-reverse">
-              <button type="button" className="focus:outline-none  text-white text-sm py-2.5 px-5 rounded-md bg-green-500 hover:bg-green-600 hover:shadow-lg flex-row-reverse">Add</button>
-            </div>
-          </div>
-        </div> */}
-
       </div>
     </>,
     document.getElementById('portal')

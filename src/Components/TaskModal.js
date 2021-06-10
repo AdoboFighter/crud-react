@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactDom from "react-dom";
 import EditTask from "./EditTask";
 
@@ -24,7 +24,51 @@ const OVERLAY_STYLES = {
 }
 
 
-export default function TaskModal({ open, children, onClose, name, date, status, updateTasksHandler }) {
+
+
+export default function TaskModal({ open, children, onClose, name, date, status, id }) {
+
+    // const [id, setName] = useState("");
+    // const [name, setName] = useState("")
+    // const [date, setDate] = useState("");
+    // const [status, setStatus] = useState("");
+    const [state, setState] = React.useState({
+        name,
+        date,
+        status
+      })
+    
+      const [newName, setName] = useState("");
+
+      function handleChange(evt) {
+        const value = evt.target.value;
+        setState({
+          ...state,
+          [evt.target.name]: value
+        });
+        console.log(evt.target.value);
+        console.log(name)
+      }
+
+    function updateUser() {
+        let item = { id, name, date, status }
+        console.warn("item", item)
+        fetch(`http://localhost:8000/task/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(item)
+        }).then((result) => {
+            result.json().then((resp) => {
+                console.warn(resp)
+                console.log(id)
+                //   getUsers()
+            })
+        })
+    }
+
 
     if (!open) return null
 
@@ -38,26 +82,38 @@ export default function TaskModal({ open, children, onClose, name, date, status,
                         {children}
                     </div>
                 </div>
-                
+
                 <h2 className="font-medium flex justify-center text-center text-3xl mb-3">Task</h2>
                 <div>
-                <EditTask  updateTasksHandler={ updateTasksHandler}> hello</EditTask>
-                    {/* <div className="mb-3">
-                        <p className="font-medium p-2 flex justify-center text-center text-2xl">Task {id}</p>
-                    </div> */}
-                    <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" for="username">Task name</label>
-                        <input value={name} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Task" />
+                    {/* <EditTask  updateTasksHandler={ updateTasksHandler}> hello</EditTask> */}
+                    <div className="mb-3">
+                        <p className="font-medium p-2 flex justify-center text-center text-2xl">{id}</p>
                     </div>
                     <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" for="username">Date</label>
-                        <input value={date} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="date" />
+                        <label className="block text-gray-700 text-sm font-bold mb-2">Task name</label>
+                        <input
+                            name="name"
+                            value={state.name}
+                            onChange={e => setName(e.target.value)}
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="" type="text" />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" >Date</label>
+                        <input 
+                            name="date"
+                            value={date}
+                            onChange={handleChange}
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="" type="date" />
                     </div>
 
                     <div className="relative inline-block w-full text-gray-700">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" for="username">Status</label>
+                        <label className="block text-gray-700 text-sm font-bold mb-2">Status</label>
                         <div className="relative inline-block w-full text-gray-700">
-                            <select className="w-full h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:shadow-outline" value={status}>
+                            <select
+                                name="status"
+                                value={state.status}
+                                onChange={handleChange}
+                                className="w-full h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:shadow-outline" >
                                 <option>Pending</option>
                                 <option>Done</option>
                             </select>
@@ -82,7 +138,7 @@ export default function TaskModal({ open, children, onClose, name, date, status,
                     <div></div>
                     <div>
                         <div className="flex flex-row-reverse">
-                            <button type="button" className="focus:outline-none  text-white text-sm py-2.5 px-5 rounded-md bg-green-500 hover:bg-green-600 hover:shadow-lg flex-row-reverse">Update</button>
+                            <button onClick={updateUser} type="button" className="focus:outline-none  text-white text-sm py-2.5 px-5 rounded-md bg-green-500 hover:bg-green-600 hover:shadow-lg flex-row-reverse">Update</button>
                         </div>
                     </div>
                 </div>
