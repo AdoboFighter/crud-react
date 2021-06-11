@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ReactDom from "react-dom";
 import EditTask from "./EditTask";
+import Swal from "sweetalert2"
 
 const MODAL_STYLES = {
     position: 'fixed',
@@ -26,20 +27,15 @@ const OVERLAY_STYLES = {
 
 
 
-export default function TaskModal({ open, children, onClose, name, date, status, id }) {
+export default function TaskModal({ open, children, onClose, name, date, status, id, updateHandler }) {
 
-    // const [id, setName] = useState("");
-    // const [name, setName] = useState("")
-    // const [date, setDate] = useState("");
-    // const [status, setStatus] = useState("");
     const [state, setState] = React.useState({
+        id,
         name,
         date,
         status
       })
     
-      const [newName, setName] = useState("");
-
       function handleChange(evt) {
         const value = evt.target.value;
         setState({
@@ -48,26 +44,37 @@ export default function TaskModal({ open, children, onClose, name, date, status,
         });
         console.log(evt.target.value);
         console.log(name)
+        console.log("hello");
       }
 
-    function updateUser() {
-        let item = { id, name, date, status }
-        console.warn("item", item)
-        fetch(`http://localhost:8000/task/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(item)
+
+    const update = (e) => {
+
+        e.preventDefault();
+        if (state.name === "" || state.date === "" || state.status === "") {
+          alert("ALl the fields are mandatory!");
+          return;
+        }
+        Swal.fire({
+          title: 'Do you want to Update this task?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: `Yes`,
+          confirmButtonColor: '#5bc0de'
         }).then((result) => {
-            result.json().then((resp) => {
-                console.warn(resp)
-                console.log(id)
-                //   getUsers()
-            })
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            updateHandler(state);
+            // this.setState({ name: "", date: "", status: "" });
+            // this.props.history.push("/");
+            Swal.fire('Task Updated!', '', 'success')
+            onClose();
+          } else {
+            
+            console.log("Do nothing");
+          }
         })
-    }
+      };
 
 
     if (!open) return null
@@ -87,21 +94,22 @@ export default function TaskModal({ open, children, onClose, name, date, status,
                 <div>
                     {/* <EditTask  updateTasksHandler={ updateTasksHandler}> hello</EditTask> */}
                     <div className="mb-3">
-                        <p className="font-medium p-2 flex justify-center text-center text-2xl">{id}</p>
+                        {/* <p className="font-medium p-2 flex justify-center text-center text-2xl">{id}</p> */}
+                        <input hidden readOnly value={id}/>
                     </div>
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2">Task name</label>
                         <input
                             name="name"
                             value={state.name}
-                            onChange={e => setName(e.target.value)}
+                            onChange={handleChange}
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="" type="text" />
                     </div>
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" >Date</label>
                         <input 
                             name="date"
-                            value={date}
+                            value={state.date}
                             onChange={handleChange}
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="" type="date" />
                     </div>
@@ -118,7 +126,7 @@ export default function TaskModal({ open, children, onClose, name, date, status,
                                 <option>Done</option>
                             </select>
                             <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                                <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+                                <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" fillRule="evenodd"></path></svg>
                             </div>
                         </div>
                     </div>
@@ -138,7 +146,7 @@ export default function TaskModal({ open, children, onClose, name, date, status,
                     <div></div>
                     <div>
                         <div className="flex flex-row-reverse">
-                            <button onClick={updateUser} type="button" className="focus:outline-none  text-white text-sm py-2.5 px-5 rounded-md bg-green-500 hover:bg-green-600 hover:shadow-lg flex-row-reverse">Update</button>
+                            <button onClick={update} type="button" className="focus:outline-none  text-white text-sm py-2.5 px-5 rounded-md bg-green-500 hover:bg-green-600 hover:shadow-lg flex-row-reverse">Update</button>
                         </div>
                     </div>
                 </div>

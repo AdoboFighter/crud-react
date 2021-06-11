@@ -14,6 +14,7 @@ function App() {
   // const LOCAL_STORAGE_KEY = "tasks";
   const [open, setIsOpen] = useState(false);
   const [tasks, setTasks] = useState([]);
+  const [tasks2, setTasks2] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterTerm, setFilterTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -43,8 +44,10 @@ function App() {
           .includes(searchTerm.toLowerCase());
       });
       setSearchResults(newTaskList);
+      // setSearchTerm("");
     } else {
       setSearchResults(tasks);
+      
     }
   }
 
@@ -52,7 +55,7 @@ function App() {
   const filterHandler = (filterTerm) => {
     setFilterTerm(filterTerm);
     if (filterTerm !== "") {
-      const newTaskList = tasks.filter((task) => {
+      const newTaskList = tasks2.filter((task) => {
         return Object.values(task)
           .join(" ")
           .toLowerCase()
@@ -60,7 +63,7 @@ function App() {
       });
       setFilterResults(newTaskList);
     } else {
-      setFilterResults(tasks);
+      setFilterResults(tasks2);
     }
   }
 
@@ -123,6 +126,7 @@ function App() {
                   {...props}
                   //search
                   tasks={searchTerm.length < 1 ? tasks : searchResults}
+                  task2={filterTerm.length < 1 ? tasks : filterResults}
                   // term search bar
                   term={searchTerm}
                   // search bar
@@ -137,6 +141,11 @@ function App() {
                   getTaskId={removeTasksHandler}
                   //add task
                   addTaskHandler={addTaskHandler}
+                  addtask={tasks}
+
+                  //update
+                  updateTasksHandler={updateTasksHandler}
+
                 />
               )}
             />

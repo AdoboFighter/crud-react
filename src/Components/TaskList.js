@@ -2,9 +2,12 @@ import React, { useRef, useState } from "react";
 import TaskCard from "./TaskCard";
 import AddForm from "./AddForm";
 import Swal from 'sweetalert2';
+import TaskModal from "./TaskModal";
+
 
 const TaskList = (props) => {
   const [open, setIsOpen] = useState(false);
+  const [openTask, setIsOpenTask] = useState(false);
   const inputE1 = useRef("");
   const inputE2 = useRef("");
   console.log(props);
@@ -13,9 +16,16 @@ const TaskList = (props) => {
   const addTaskHandler = (task) => {
     props.addTaskHandler(task);
     setIsOpen(false);
-    Swal.fire('Added!', 'Task is added to the list','success');
+    Swal.fire('Added!', 'Task is added to the list', 'success');
   }
-  
+
+  const updateTasksHandler = (task) => {
+    props.updateTasksHandler(task);
+    setIsOpenTask(false);
+  }
+
+
+
   const deleteTaskHandler = (id) => {
     Swal.fire({
       title: 'Do you want to delete this task?',
@@ -32,7 +42,7 @@ const TaskList = (props) => {
         console.log("Do nothing");
       }
     })
-    
+
   };
 
   const renderTaskList = props.tasks.map((task) => {
@@ -40,6 +50,7 @@ const TaskList = (props) => {
       <TaskCard
         task={task}
         clickHander={deleteTaskHandler}
+        updateHandler={updateTasksHandler}
         key={task.id}
       />
     );
@@ -48,14 +59,17 @@ const TaskList = (props) => {
 
   const getSearchTerm = () => {
     props.searchKeyword(inputE1.current.value)
-    inputE2.current.value = ""
+    inputE2.current.value = "";
   }
 
 
   const getFilterBy = () => {
-    
     props.searchKeyword(inputE2.current.value)
-    inputE1.current.value = ""
+    clearSearch();
+  }
+
+  const clearSearch = () => {
+    inputE1.current.value = "";
   }
 
   return (
@@ -69,9 +83,11 @@ const TaskList = (props) => {
               </button>
             </span>
             <input
+              id="search1"
               ref={inputE1}
               type="text"
               value={props.term}
+              onClick={clearSearch}
               onChange={getSearchTerm}
               className="py-2 text-sm text-white  rounded-md pl-10 focus:outline-none focus:bg-white focus:text-gray-900" placeholder="Search..." />
           </div>
@@ -108,6 +124,10 @@ const TaskList = (props) => {
       <AddForm open={open} onClose={() => setIsOpen(false)} addTaskHandler={addTaskHandler} >
 
       </AddForm>
+
+      <TaskModal open={openTask} onClose={() => setIsOpenTask(false)} addTaskHandler={addTaskHandler} >
+
+      </TaskModal>
     </div>
   );
 };

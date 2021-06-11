@@ -78,6 +78,7 @@ class EditTask extends React.Component {
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">Status :</label>
             <select onChange={(e) => this.setState({ status: e.target.value })} name="status" value={this.state.status} class="w-full h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:shadow-outline">
+              <option defaultValue="">Choose a status</option>
               <option value="Pending">Pending</option>
               <option value="Done">Done</option>
             </select>
