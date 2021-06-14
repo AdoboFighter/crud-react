@@ -1,70 +1,47 @@
-import React, { useRef, useState } from "react";
+import React, { useState, useRef, useContext } from 'react'
+import { TaskContext } from '../Context/GlobalState'
 import TaskCard from "./TaskCard";
-import AddForm from "./AddForm";
 import Swal from 'sweetalert2';
-import TaskModal from "./TaskModal";
+import AddForm from "./AddForm";
 
 
+export default function TaskList() {
+  const appContext = useContext(TaskContext)
+  const { tasks, removeTasksHandler, addTaskHandler,
+    searchResults,
+    updateTasksHandler, searchHandler} = appContext
 
-const TaskList = (props) => {
-  const [open, setIsOpen] = useState(false);
-  const [openTask, setIsOpenTask] = useState(false);
-  const inputE1 = useRef("");
-  const inputE2 = useRef("");
-  console.log(props);
+  const [open, setIsOpen] = useState(false)
+  const inputE1 = useRef("")
+  const inputE2 = useRef("")
 
-
-  const addTaskHandler = (task) => {
-    props.addTaskHandler(task);
-    setIsOpen(false);
-    Swal.fire('Added!', 'Task is added to the list', 'success');
-  }
-
-  const updateTasksHandler = (task) => {
-    props.updateTasksHandler(task);
-    setIsOpenTask(false);
-  }
-
-
-
-
-  const deleteTaskHandler = (id) => {
-    Swal.fire({
-      title: 'Do you want to delete this task?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: `Yes`,
-      confirmButtonColor: '#FF0000'
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        props.getTaskId(id);
-        Swal.fire('Deleted!', '', 'success')
-      } else {
-        console.log("Do nothing");
-      }
-    })
-
-  };
-
-  const renderTaskList = props.tasks.map((task) => {
+  const renderTaskList = searchResults.map(task => {
     return (
       <TaskCard
         task={task}
-        clickHander={deleteTaskHandler}
-        updateHandler={updateTasksHandler}
+        clickHander={removeTasksHandler}
+        updateTasksHandler={updateTasksHandler}
         key={task.id}
       />
     );
   });
 
+  const renderTaskList2 = tasks.map(task => {
+    return (
+      <TaskCard
+        task={task}
+        clickHander={removeTasksHandler}
+        updateTasksHandler={updateTasksHandler}
+        key={task.id}
+      />
+    );
+  });
 
   const getSearchTerm = () => {
-    props.searchKeyword(inputE1.current.value, inputE2.current.value)
+    searchHandler(inputE1.current.value, inputE2.current.value)
+
 
   }
-
-
 
   return (
     <div className="main">
@@ -80,7 +57,7 @@ const TaskList = (props) => {
               id="search1"
               ref={inputE1}
               type="text"
-              value={props.term}
+              // value={props.term}
               onChange={getSearchTerm}
               className="py-2 text-sm text-black  rounded-md pl-10 focus:outline-none focus:bg-white focus:text-gray-900" placeholder="Search..." />
           </div>
@@ -92,7 +69,7 @@ const TaskList = (props) => {
               <select
                 ref={inputE2}
                 type="text"
-                value={props.term2}
+                // value={props.term2}
                 onChange={getSearchTerm}
                 className="w-full h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:shadow-outline" placeholder="">
                 <option value="">Filter By Status</option>
@@ -108,22 +85,16 @@ const TaskList = (props) => {
         </div>
       </div>
       <div>
-        {renderTaskList.length > 0 ? renderTaskList : "Empty Task"}
+        {renderTaskList.length > 0 ? renderTaskList : renderTaskList2}
       </div>
 
       <div className="mt-2 flex flex-row-reverse">
         <button type="button" onClick={() => setIsOpen(true)} className="focus:outline-none  text-white text-sm py-2.5 px-5 rounded-md bg-green-500 hover:bg-green-600 hover:shadow-lg flex-row-reverse">Add Task</button>
       </div>
 
-      <AddForm open={open} onClose={() => setIsOpen(false)} addTaskHandler={addTaskHandler} >
+      <AddForm open={open} onClose={() => setIsOpen(false)}  addTaskHandler={addTaskHandler}/>
 
-      </AddForm>
 
-      <TaskModal open={openTask} onClose={() => setIsOpenTask(false)} addTaskHandler={addTaskHandler} >
-
-      </TaskModal>
     </div>
-  );
-};
-
-export default TaskList;
+  )
+}

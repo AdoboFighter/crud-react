@@ -50,7 +50,8 @@ export default function AddForm({ open, children, onClose, addTaskHandler, AddTa
     }
     addTaskHandler(AddTask);
     // AddTask.setState({ name: "", date: "", status: "" });
-    console.log(AddTask);
+    Swal.fire('Task Added!', '', 'success')
+    onClose();
   };
 
   if (!open) return null
