@@ -100,9 +100,9 @@ function App() {
     const getAllTasks = async () => {
       const allTasks = await retrieveTasks();
       if (allTasks) setTasks(allTasks);
-      
+      setSearchResults(allTasks)
     };
-    
+
     getAllTasks();
   }, []);
 
@@ -129,7 +129,7 @@ function App() {
                   //search
                   term={searchTerm}
                   term2={filterTerm}
-                  tasks={searchTerm || filterTerm !=="" ? searchResults : tasks} 
+                  tasks={searchResults}
                   searchKeyword={searchHandler}
 
                   //delete task

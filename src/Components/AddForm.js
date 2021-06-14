@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import ReactDom from 'react-dom'
-import AddTask from "./AddTask";
 import Swal from 'sweetalert2';
 
 
@@ -88,6 +87,7 @@ export default function AddForm({ open, children, onClose, addTaskHandler, AddTa
               <select onChange={(e) => setStatus(e.target.value)} name="status"  className="w-full h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:shadow-outline">
                 <option defaultValue="">Choose a status</option>
                 <option value="Pending">Pending</option>
+                <option value="On-going">On-going</option>
                 <option value="Done">Done</option>
               </select>
             </div>

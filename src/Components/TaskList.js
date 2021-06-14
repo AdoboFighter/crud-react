@@ -3,6 +3,8 @@ import TaskCard from "./TaskCard";
 import AddForm from "./AddForm";
 import Swal from 'sweetalert2';
 import TaskModal from "./TaskModal";
+import SwalForm from "./SwalForm";
+
 
 
 const TaskList = (props) => {
@@ -23,6 +25,7 @@ const TaskList = (props) => {
     props.updateTasksHandler(task);
     setIsOpenTask(false);
   }
+
 
 
 
@@ -58,19 +61,17 @@ const TaskList = (props) => {
 
 
   const getSearchTerm = () => {
-    props.searchKeyword(inputE1.current.value)
-    inputE2.current.value = "";
+    props.searchKeyword(inputE1.current.value, inputE2.current.value)
+
+  }
+
+  const openSwal = () => {
+    return (
+      <SwalForm></SwalForm>
+    )
   }
 
 
-  const getFilterBy = () => {
-    props.searchKeyword(inputE2.current.value)
-    clearSearch();
-  }
-
-  const clearSearch = () => {
-    inputE1.current.value = "";
-  }
 
   return (
     <div className="main">
@@ -87,9 +88,8 @@ const TaskList = (props) => {
               ref={inputE1}
               type="text"
               value={props.term}
-              onClick={clearSearch}
               onChange={getSearchTerm}
-              className="py-2 text-sm text-white  rounded-md pl-10 focus:outline-none focus:bg-white focus:text-gray-900" placeholder="Search..." />
+              className="py-2 text-sm text-black  rounded-md pl-10 focus:outline-none focus:bg-white focus:text-gray-900" placeholder="Search..." />
           </div>
         </div>
         <div></div>
@@ -99,11 +99,12 @@ const TaskList = (props) => {
               <select
                 ref={inputE2}
                 type="text"
-                value={props.term}
-                onChange={getFilterBy}
+                value={props.term2}
+                onChange={getSearchTerm}
                 className="w-full h-10 pl-3 pr-6 text-base placeholder-gray-600 border rounded-lg appearance-none focus:shadow-outline" placeholder="">
                 <option value="">Filter By Status</option>
                 <option value="Pending">Pending</option>
+                <option value="On-going">On-going</option>
                 <option value="Done">Done</option>
               </select>
               <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
@@ -113,7 +114,7 @@ const TaskList = (props) => {
           </div>
         </div>
       </div>
-      <div className="">
+      <div>
         {renderTaskList.length > 0 ? renderTaskList : "Empty Task"}
       </div>
 
