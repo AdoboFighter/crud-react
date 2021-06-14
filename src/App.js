@@ -6,7 +6,6 @@ import api from "./api/tasks.js"
 import { v4 as uuidv4 } from 'uuid';
 import TaskList from "./Components/TaskList";
 import TaskDetail from "./Components/TaskDetail";
-import EditTask from "./Components/EditTask";
 Modal.setAppElement('#root')
 
 
@@ -146,7 +145,7 @@ function App() {
               )}
             />
 
-            <Route
+            {/* <Route
               path="/edit"
               render={(props) => (
                 <EditTask
@@ -154,7 +153,7 @@ function App() {
                   updateTasksHandler={updateTasksHandler}
                 />
               )}
-            />
+            /> */}
             <Route path="/task/:id" component={TaskDetail} />
 
           </Switch>

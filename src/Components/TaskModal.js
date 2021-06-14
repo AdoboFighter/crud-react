@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import ReactDom from "react-dom";
-import EditTask from "./EditTask";
 import Swal from "sweetalert2"
 
 const MODAL_STYLES = {

@@ -3,7 +3,6 @@ import TaskCard from "./TaskCard";
 import AddForm from "./AddForm";
 import Swal from 'sweetalert2';
 import TaskModal from "./TaskModal";
-import SwalForm from "./SwalForm";
 
 
 
@@ -63,12 +62,6 @@ const TaskList = (props) => {
   const getSearchTerm = () => {
     props.searchKeyword(inputE1.current.value, inputE2.current.value)
 
-  }
-
-  const openSwal = () => {
-    return (
-      <SwalForm></SwalForm>
-    )
   }
 
 
